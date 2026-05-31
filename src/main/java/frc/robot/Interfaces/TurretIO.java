@@ -31,7 +31,7 @@ public interface TurretIO extends IO<TurretIO.TurretInputs> {
     }
 
     public void setVoltage(double voltage);
-    public void setDutyCycle(double speeed);
+    public void setDutyCycle(double speed);
     public void setPosition(Rotation2d angle);
     public void setPositionWithFF(Rotation2d angle, double feedforward);
     public void resetEncoder();
