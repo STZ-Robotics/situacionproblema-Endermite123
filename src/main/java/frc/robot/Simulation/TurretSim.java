@@ -34,19 +34,24 @@ public class TurretSim implements TurretIO {
             false,
             Units.degreesToRadians(0)
         );
-        turrerController = new ProfiledPIDController(TurretConstants.kP, TurretConstants.kI, TurretConstants.kD, 
-            new TrapezoidProfile.Constraints(0,0)); //No especificaron el max y min :[
+        turrerController = new ProfiledPIDController(20, 0, 0, 
+            new TrapezoidProfile.Constraints(2,4)); 
     }
 
     @Override
     public void updateInputs(TurretInputs inputs) {
 
         if (isClosedLoop){
-            appliedVoltage = turrerController.calculate(turretSim.getAngleRads(), currentTargetAngle);
+            appliedVoltage = turrerController.calculate(Units.radiansToRotations(turretSim.getAngleRads()), currentTargetAngle);
         }
         appliedVoltage = MathUtil.clamp(appliedVoltage,-12,12);
         turretSim.setInputVoltage(appliedVoltage);
         turretSim.update(0.02);
+        inputs.angle = Rotation2d.fromRadians(turretSim.getAngleRads());
+        inputs.rps = Units.radiansPerSecondToRotationsPerMinute(turretSim.getVelocityRadPerSec())/60;
+        inputs.targetAngle = Rotation2d.fromRotations(currentTargetAngle);
+        inputs.voltage = appliedVoltage;
+        inputs.current = turretSim.getCurrentDrawAmps();
     }
     @Override
     public void setVoltage(double voltage){
@@ -61,11 +66,13 @@ public class TurretSim implements TurretIO {
     @Override
     public void setPosition(Rotation2d angle){
         isClosedLoop = true;
-        this.currentTargetAngle = angle.getRadians();
+        this.currentTargetAngle = angle.getRotations();
     }
 
     @Override
     public void setPositionWithFF(Rotation2d angle, double feedforward) {
+        isClosedLoop = true;
+        this.currentTargetAngle = angle.getRotations();
     }
     @Override
     public void resetEncoder(){
