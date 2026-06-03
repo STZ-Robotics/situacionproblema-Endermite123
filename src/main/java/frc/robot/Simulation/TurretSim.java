@@ -52,6 +52,7 @@ public class TurretSim implements TurretIO {
         inputs.targetAngle = Rotation2d.fromRotations(currentTargetAngle);
         inputs.voltage = appliedVoltage;
         inputs.current = turretSim.getCurrentDrawAmps();
+        inputs.speed = turretSim.getVelocityRadPerSec();
     }
     @Override
     public void setVoltage(double voltage){

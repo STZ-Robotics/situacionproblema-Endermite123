@@ -14,6 +14,7 @@ public interface TurretIO extends IO<TurretIO.TurretInputs> {
         public double rps = 0;
         public double voltage = 0;
         public double current = 0;
+        public double speed = 0;
 
         @Override
         public TurretInputs snapshot() {
@@ -26,6 +27,7 @@ public interface TurretIO extends IO<TurretIO.TurretInputs> {
         clone.rps = this.rps;
         clone.voltage = this.voltage;
         clone.current = this.current;
+        clone.speed = this.speed;
         return clone;
 }
     }

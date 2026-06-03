@@ -53,6 +53,7 @@ public class TurretIOSpark implements TurretIO {
         inputs.voltage = turretMotor.getAppliedOutput()*turretMotor.getBusVoltage();
         inputs.current = turretMotor.getOutputCurrent();
         inputs.targetAngle = this.currentTargetAngle;
+        inputs.speed = turretEncoder.getVelocity();
     }
 
     @Override
